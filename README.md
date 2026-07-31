@@ -10,9 +10,12 @@ projects, in the same spirit as
   Woodpecker pipeline targets (`ci-version`, `ci-export`, `ci-upload`,
   `ci-update`).
 - `example-woodpecker.yaml` — Woodpecker pipeline: version → build
-  (`node:22-alpine`, syntax check + web bundle) → upload (scp to the
-  droparea) → update (calls the teletypegames `/update` endpoint with
-  `platform=phaser`).
+  (syntax check + web bundle in the
+  `git.teletype.hu/internal/phaser-builder` image) → upload (scp to
+  the droparea) → update (calls the teletypegames `/update` endpoint
+  with `platform=phaser`).
+- `builder.Dockerfile` — the CI builder image: `node:22-alpine` with
+  make/zip/curl baked in.
 - `example-tasks.json` — VS Code `.vscode/tasks.json` with the common
   dev tasks: **Serve** (`make serve`, default build task,
   `Cmd+Shift+B`), **Build Web** and **Make build**.
@@ -41,5 +44,13 @@ single `game.js`. Node is only used for a `node --check` syntax pass.
 The pipeline uploads `$(PROJECT)-$(VERSION).html.zip` to the droparea,
 then triggers
 `/update?platform=phaser&name=$(PROJECT)&version=$(VERSION)`.
+
+## Builder image
+
+```sh
+docker build --platform linux/amd64 -f builder.Dockerfile \
+  -t git.teletype.hu/internal/phaser-builder:latest .
+docker push git.teletype.hu/internal/phaser-builder:latest
+```
 
 Detailed documentation lives on the wiki: `/development/phaser`.
