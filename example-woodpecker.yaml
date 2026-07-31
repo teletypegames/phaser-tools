@@ -6,7 +6,7 @@ steps:
       - make ci-version
 
   - name: build
-    image: git.teletype.hu/internal/phaser-builder:latest
+    image: git.teletypegames.org/internal/phaser-builder:latest
     commands:
       - make ci-export
 

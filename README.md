@@ -11,7 +11,7 @@ projects, in the same spirit as
   `ci-update`).
 - `example-woodpecker.yaml` — Woodpecker pipeline: version → build
   (syntax check + web bundle in the
-  `git.teletype.hu/internal/phaser-builder` image) → upload (scp to
+  `git.teletypegames.org/internal/phaser-builder` image) → upload (scp to
   the droparea) → update (calls the teletypegames `/update` endpoint
   with `platform=phaser`).
 - `builder.Dockerfile` — the CI builder image: `node:22-alpine` with
@@ -49,8 +49,8 @@ then triggers
 
 ```sh
 docker build --platform linux/amd64 -f builder.Dockerfile \
-  -t git.teletype.hu/internal/phaser-builder:latest .
-docker push git.teletype.hu/internal/phaser-builder:latest
+  -t git.teletypegames.org/internal/phaser-builder:latest .
+docker push git.teletypegames.org/internal/phaser-builder:latest
 ```
 
 Detailed documentation lives on the wiki: `/development/phaser`.
