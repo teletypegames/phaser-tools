@@ -8,10 +8,10 @@ projects, in the same spirit as
 - `example-makefile.make` — project Makefile: local dev targets
   (`build`, `web`, `serve`, `export`, `watch`, `clean`) plus the
   Woodpecker pipeline targets (`ci-version`, `ci-export`, `ci-upload`,
-  `ci-update`).
+  `ci-publish`).
 - `example-woodpecker.yaml` — Woodpecker pipeline: version → build
   (syntax check + web bundle in the
-  `git.teletypegames.org/internal/phaser-builder` image) → upload (HTTP POST to `/build/upload`) → update (calls the teletypegames `/build/publish` endpoint
+  `git.teletypegames.org/internal/phaser-builder` image) → upload (HTTP POST to `/build/upload`) → publish (calls the teletypegames `/build/publish` endpoint
   with `platform=phaser`).
 - `builder.Dockerfile` — the CI builder image: `node:22-alpine` with
   make/zip/curl baked in.
