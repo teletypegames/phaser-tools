@@ -11,8 +11,7 @@ projects, in the same spirit as
   `ci-update`).
 - `example-woodpecker.yaml` — Woodpecker pipeline: version → build
   (syntax check + web bundle in the
-  `git.teletypegames.org/internal/phaser-builder` image) → upload (scp to
-  the droparea) → update (calls the teletypegames `/update` endpoint
+  `git.teletypegames.org/internal/phaser-builder` image) → upload (HTTP POST to `/build/upload`) → update (calls the teletypegames `/build/publish` endpoint
   with `platform=phaser`).
 - `builder.Dockerfile` — the CI builder image: `node:22-alpine` with
   make/zip/curl baked in.
@@ -35,15 +34,15 @@ single `game.js`. Node is only used for a `node --check` syntax pass.
    concatenated in filename order — prefix with numbers if load order
    matters).
 2. Copy `example-woodpecker.yaml` to `.woodpecker.yaml` and add the
-   `droparea_ssh_password` / `update_secret_key` secrets in Woodpecker.
+   `update_secret_key` secret in Woodpecker.
 3. Copy `example-tasks.json` to `.vscode/tasks.json`.
 
 `make serve` builds the web bundle and serves it on
 `http://localhost:8000` (Python 3's built-in HTTP server).
 
-The pipeline uploads `$(PROJECT)-$(VERSION).html.zip` to the droparea,
+The pipeline uploads `$(PROJECT)-$(VERSION).html.zip` via `/build/upload`,
 then triggers
-`/update?platform=phaser&name=$(PROJECT)&version=$(VERSION)`.
+`/build/publish?platform=phaser&name=$(PROJECT)&version=$(VERSION)`.
 
 ## Builder image
 
