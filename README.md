@@ -6,13 +6,11 @@ projects, in the same spirit as
 [love-tools](../love-tools).
 
 - `example-makefile.make` — project Makefile: local dev targets
-  (`build`, `web`, `serve`, `export`, `watch`, `clean`) plus the
-  Woodpecker pipeline targets (`ci-version`, `ci-export`, `ci-upload`,
-  `ci-publish`).
-- `example-woodpecker.yaml` — Woodpecker pipeline: version → build
-  (syntax check + web bundle in the
-  `git.teletypegames.org/internal/phaser-builder` image) → upload (HTTP POST to `/build/upload`) → publish (calls the teletypegames `/build/publish` endpoint
-  with `platform=phaser`).
+  (`build`, `web`, `serve`, `export`, `watch`, `clean`).
+- `example-woodpecker.yaml` — a one-line marker (`platform: phaser`): the
+  full pipeline (version → build → upload → publish) is served by the update server's Woodpecker
+  configuration extension — preview it with
+  `curl "https://teletypegames.org/build/config?platform=phaser"`.
 - `builder.Dockerfile` — the CI builder image: `node:22-alpine` with
   make/zip/curl baked in.
 - `example-tasks.json` — VS Code `.vscode/tasks.json` with the common
@@ -33,14 +31,17 @@ single `game.js`. Node is only used for a `node --check` syntax pass.
    `PHASER_VERSION`, and put the game sources into `src/` (they are
    concatenated in filename order — prefix with numbers if load order
    matters).
-2. Copy `example-woodpecker.yaml` to `.woodpecker.yaml` and add the
-   `update_secret_key` secret in Woodpecker.
+2. Copy `example-woodpecker.yaml` to `.woodpecker.yaml` (a one-line marker — the
+   pipeline itself is served by the update server; add `name:` when the
+   software name differs from the repo name) and add the
+   `application_token` secret in Woodpecker (an ApplicationToken with
+   the `update` + `upload` scopes, created in the admin).
 3. Copy `example-tasks.json` to `.vscode/tasks.json`.
 
 `make serve` builds the web bundle and serves it on
 `http://localhost:8000` (Python 3's built-in HTTP server).
 
-The pipeline uploads `$(PROJECT)-$(VERSION).html.zip` via `/build/upload`,
+The served pipeline uploads `$(PROJECT)-$(VERSION).html.zip` via `/build/upload`,
 then triggers
 `/build/publish?platform=phaser&name=$(PROJECT)&version=$(VERSION)`.
 
