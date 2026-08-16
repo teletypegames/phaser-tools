@@ -49,8 +49,8 @@ then triggers
 
 ```sh
 docker build --platform linux/amd64 -f builder.Dockerfile \
-  -t git.teletypegames.org/internal/phaser-builder:latest .
-docker push git.teletypegames.org/internal/phaser-builder:latest
+  -t git.teletypegames.org/build/phaser-builder:latest .
+docker push git.teletypegames.org/build/phaser-builder:latest
 ```
 
 Detailed documentation lives on the wiki: `/development/phaser`.

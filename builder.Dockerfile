@@ -3,8 +3,8 @@
 #
 # Build & push (the CI runner is linux/amd64):
 #   docker build --platform linux/amd64 -f builder.Dockerfile \
-#     -t git.teletypegames.org/internal/phaser-builder:latest .
-#   docker push git.teletypegames.org/internal/phaser-builder:latest
+#     -t git.teletypegames.org/build/phaser-builder:latest .
+#   docker push git.teletypegames.org/build/phaser-builder:latest
 
 FROM node:22-alpine
 
