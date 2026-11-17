@@ -18,6 +18,13 @@ projects, in the same spirit as
   `Cmd+Shift+B`), **Build Web** and **Make build**.
 - `web/index.html` — the HTML shell downloaded by `make web` and
   packaged next to `phaser.min.js` and the bundled `game.js`.
+- `hello/src/main.js` — a minimal Hello World game (copied as
+  `src/main.js`).
+- `warp-template.json` — what the WarpEngine Toolbox's *New Game*
+  copies from this repo ("Start from the template only"): the
+  Makefile, the VS Code tasks and the Hello World. The toolbox writes
+  `.woodpecker.yaml`, `metadata.json`, `README.md` and `.gitignore`
+  itself, so the new project builds and shows "Hello World" as is.
 
 There is no bundler and no `node_modules`: the pinned
 `phaser.min.js` build is downloaded from the jsDelivr CDN at export
