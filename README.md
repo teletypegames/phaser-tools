@@ -67,10 +67,12 @@ then triggers
 
 ## Builder image
 
+It is the base of the dev container too, so it is built for amd64 (the CI
+runner) and arm64 (Apple Silicon); both get the same packages:
+
 ```sh
-docker build --platform linux/amd64 -f builder.Dockerfile \
-  -t git.teletypegames.org/build/phaser-builder:latest .
-docker push git.teletypegames.org/build/phaser-builder:latest
+docker buildx build --platform linux/amd64,linux/arm64 -f builder.Dockerfile \
+  -t git.teletypegames.org/build/phaser-builder:latest --push .
 ```
 
 Detailed documentation lives on the wiki: `/development/phaser`.
