@@ -13,9 +13,9 @@ projects, in the same spirit as
   `curl "https://teletypegames.org/build/config?platform=phaser"`.
 - `builder.Dockerfile` — the CI builder image: `node:22-alpine` with
   make/zip/curl baked in.
-- `example-tasks.json` — VS Code `.vscode/tasks.json` with the common
-  dev tasks: **Serve** (`make serve`, default build task,
-  `Cmd+Shift+B`), **Build Web** and **Make build**.
+- `example-tasks.json` — VS Code `.vscode/tasks.json`: `build` (the default
+  build task, a syntax check) and `web` as `warpengine` tasks of the WarpEngine
+  Toolbox.
 - `web/index.html` — the HTML shell downloaded by `make web` and
   packaged next to `phaser.min.js` and the bundled `game.js`.
 - `hello/src/main.js` — a minimal Hello World game (copied as
@@ -31,6 +31,19 @@ There is no bundler and no `node_modules`: the pinned
 time (the same way love-tools downloads love.js), and the game
 sources in `src/*.js` are concatenated in filename order into a
 single `game.js`. Node is only used for a `node --check` syntax pass.
+
+## Dev container
+
+`warp-template.json` has a `devcontainer` key that the WarpEngine Toolbox reads
+(an older toolbox ignores it): a new project gets `.devcontainer/` from
+`example-devcontainer.json` and `example-devcontainer.Dockerfile` — the CI
+builder image the host names (`{builderImage}`) plus git and a `dev` user —
+so a computer with only Docker builds with the same toolchain as the pipeline.
+The tasks of `example-devcontainer-tasks.json` are merged into
+`.vscode/tasks.json`: `dev image` builds the container image, `play` builds the
+game and plays it in the host's web runtime. The `play` task builds `make web` in the container and plays `dist/web` in the Play panel. `make serve` still works on a computer with Python; in the container its port is not published, so Play is the way to try the game there.
+For an existing game repo, *WarpEngine: Add Dev Container* adds it and merges
+the tasks, keeping yours.
 
 ## Usage in a game repo
 
