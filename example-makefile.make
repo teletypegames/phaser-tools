@@ -12,11 +12,13 @@ WEB_DIR    = $(DIST_DIR)/web
 OUTPUT_ZIP = $(PROJECT)-$(VERSION).html.zip
 
 PHASER_JS_URL  = https://cdn.jsdelivr.net/npm/phaser@$(PHASER_VERSION)/dist/phaser.min.js
-INDEX_HTML_URL = https://git.teletypegames.org/tools/phaser-tools/raw/branch/master/web/index.html
+INDEX_HTML_URL = https://git.teletypegames.org/build/phaser-tools/raw/branch/master/web/index.html
 
 all: build
 
-build:
+build: check
+
+check:
 	@echo "==> Checking JS syntax"
 	@for f in $(SRC_DIR)/*.js; do node --check $$f; done
 
@@ -29,7 +31,9 @@ web: build
 	@echo "==> Bundling game sources"
 	cat $(SRC_DIR)/*.js > $(WEB_DIR)/game.js
 
-serve: web
+# serves the web build on this computer (Python 3); in the dev container
+# its port is not published, Play is the way there
+run: web
 	@echo "==> Serving on http://localhost:8000"
 	python3 -m http.server -d $(WEB_DIR) 8000
 
@@ -48,4 +52,4 @@ watch:
 clean:
 	rm -rf $(DIST_DIR)
 
-.PHONY: all build web serve export watch clean
+.PHONY: all build check run web export watch clean
